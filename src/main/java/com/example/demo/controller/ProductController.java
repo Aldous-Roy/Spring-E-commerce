@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.color.ProfileDataException;
@@ -20,14 +22,18 @@ public class ProductController {
     public String serverSetup(){
         return "Spring Boot Server Is Running";
     }
+
     @GetMapping("/products")
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts(){
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/products/{prod_id}")
-    public Product getOneProduct(@PathVariable Integer prod_id){
-        return productService.getOneProduct(prod_id);
+    public ResponseEntity<Product> getOneProduct(@PathVariable Integer prod_id){
+        if(productService.getOneProduct(prod_id)!=null)
+            return new ResponseEntity<>(productService.getOneProduct(prod_id),HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping("/products")
     public void addNewProduct(@RequestBody Product newproduct){
