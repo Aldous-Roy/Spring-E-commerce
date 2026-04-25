@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.ObjectMapper;
 
 import java.awt.color.ProfileDataException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -35,8 +38,16 @@ public class ProductController {
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping("/products")
-    public void addNewProduct(@RequestBody Product newproduct){
-         productService.addNewProduct(newproduct);
+
+
+    @PostMapping(value = "/products", consumes = "multipart/form-data")
+    public void addNewProduct(
+            @RequestPart("newproduct") String productJson,
+            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Product product = mapper.readValue(productJson, Product.class);
+
+        productService.addNewProduct(product, imageFile);
     }
 }
