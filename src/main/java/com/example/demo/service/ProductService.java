@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public class ProductService {
 
+
     @Autowired
     private ProductRepo productRepo;
 
@@ -19,5 +20,9 @@ public class ProductService {
 
     public void  addNewProduct(Product newProduct) {
          productRepo.save(newProduct);
+    }
+
+    public Product getOneProduct(Integer prod_Id){
+        return productRepo.findById(prod_Id).orElse(null);
     }
 }
