@@ -56,4 +56,8 @@ public class ProductService {
             productRepo.delete(deleteProduct);
         return "Product Deleted Successfully";
     }
+
+    public List<Product> searchProduct(String searchWord) {
+        return productRepo.searchProduct(searchWord);
+    }
 }
