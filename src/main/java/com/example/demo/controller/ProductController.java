@@ -27,12 +27,12 @@ public class ProductController {
         return "Spring Boot Server Is Running";
     }
 
-    @GetMapping("/products")
+    @GetMapping("/product")
     public ResponseEntity<List<Product>> getAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    @GetMapping("/products/{prod_id}")
+    @GetMapping("/product/{prod_id}")
     public ResponseEntity<Product> getOneProduct(@PathVariable Integer prod_id){
         if(productService.getOneProduct(prod_id)!=null)
             return new ResponseEntity<>(productService.getOneProduct(prod_id),HttpStatus.OK);
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
 
-    @PostMapping(value = "/products", consumes = "multipart/form-data")
+    @PostMapping(value = "/product", consumes = "multipart/form-data")
     public void addNewProduct(
             @RequestPart("newproduct") String productJson,
             @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
