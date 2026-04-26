@@ -31,4 +31,29 @@ public class ProductService {
     public Product getOneProduct(Integer prod_Id){
         return productRepo.findById(prod_Id).orElse(null);
     }
+
+    public void updateProduct(int id, Product updatedProduct, MultipartFile imageFile) throws IOException {
+
+        Product existingProduct = productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setPrice(updatedProduct.getPrice());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            existingProduct.setImage(imageFile.getBytes());
+            existingProduct.setImageType(imageFile.getContentType());
+            existingProduct.setImageName(imageFile.getOriginalFilename());
+        }
+
+        productRepo.save(existingProduct);
+    }
+
+    public String deleteProduct(Integer prodId) {
+        Product deleteProduct=productRepo.findById(prodId).orElse(null);
+        if(deleteProduct==null) return "The Product is not found";
+        else
+            productRepo.delete(deleteProduct);
+        return "Product Deleted Successfully";
+    }
 }
